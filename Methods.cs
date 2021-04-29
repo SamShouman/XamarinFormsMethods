@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,8 +90,10 @@ namespace DeliveryApplication.Tools
                                                              : MessagesAR.MESSAGES[key];
         }
 
-        public static string ReplaceString(string str, string symbol)
+        public static string ReplaceEmail(string str, string symbol)
         {
+            /* hide middle chars of email for security */
+
             string email = str.Split('@')[0], host = str.Split('@')[1];
             int show = str.Length >= 4 ? email.Length / 4 : 1; // quarter of the str length
 
