@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace DeliveryApplication.Tools
 {
@@ -219,6 +221,74 @@ namespace DeliveryApplication.Tools
             {
                 return false;
             }
+        }
+
+        public static List<T> ObservableCollToList<T>(ObservableCollection<T> oc)
+        {
+            List<T> lst = new List<T>();
+
+            foreach(var item in oc)
+            {
+                lst.Add(item);
+            }
+
+            return lst;
+        }
+
+        public static ObservableCollection<T> ListToObservableColl<T>(List<T> lst)
+        {
+            ObservableCollection<T> oc = new ObservableCollection<T>();
+
+            foreach (var item in lst)
+            {
+                oc.Add(item);
+            }
+
+            return oc;
+        }
+
+        public static void ClearForm(Layout child)
+        {
+            /*
+                ATTENTION: need to check if (this.content as Layout) is != null before calling this method
+             */
+            foreach (var item in child.Children)
+            {
+                var layout = item as Layout;
+                if (layout != null)
+                    ClearForm(layout);
+                else
+                    ClearEntry(item);
+            }
+
+            void ClearEntry(Element entryElement)
+            {
+                var entry = entryElement as Entry;
+                if (entry != null)
+                    entry.Text = string.Empty;
+            }
+        }
+
+        public static int Pagination<T>(List<T> lst, ObservableCollection<T> oc, int pagination, int fromRange)
+        {
+            /*
+             * THIS METHOD WILL BE USED TO SHOW ITEMS IN A COLLECTION VIEW
+                @param lst: lst of objects you want to fetch the items from
+                @param oc: objects where the items will be added to to show them
+                @param pagination: number of items to show in each iteration
+                @param fromRange: last index fetched
+             */
+            if (lst.Count == 0)
+                return 0;
+
+            int count = lst.Count - fromRange > pagination ? pagination : lst.Count - fromRange;
+            foreach (var order in lst.GetRange(fromRange, count))
+            {
+                oc.Add(order);
+                fromRange++;
+            }
+
+            return fromRange;
         }
     }
 }
