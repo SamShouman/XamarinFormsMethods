@@ -290,5 +290,52 @@ namespace DeliveryApplication.Tools
 
             return fromRange;
         }
+        
+                public static void ListenForInternetConnection(Page p)
+        {
+            /*
+                Dsplays alert if internet connection was lost
+             */
+            try
+            {
+                Connectivity.ConnectivityChanged += (s, e) =>
+                {
+                    if (!(Connectivity.NetworkAccess == NetworkAccess.Internet)) // no internet available
+                        DisplayExceptionAlert(p);
+                };
+            }
+            catch (Exception e) {}
+        }
+
+        public async static Task OpenEmailApp(string subject = "", string body = "", string emailTo = "")
+        {
+            /*
+                OPEN EMAIL APP FROM THE DEVICE
+             */
+            await Email.ComposeAsync(subject, body, emailTo);
+        }
+
+        public static async Task NothingToShow<T>(Label lbl, List<T> lst)
+        {
+            /* this method will be used to animate a label when showing a list but its itemssource is emtpy */
+
+            if (lst.Count == 0)
+            {
+                lbl.Opacity = 0;
+                lbl.IsVisible = true;
+                await lbl.FadeTo(1, 2500);
+            }
+            else
+                lbl.IsVisible = false;
+        }
+
+        public static void CollectionViewItemSpacing(CollectionView collView, int spacing)
+        {
+            /* add spacing vertically between items of the collection view */
+            collView.ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical)
+            {
+                ItemSpacing = spacing
+            };
+        }
     }
 }
