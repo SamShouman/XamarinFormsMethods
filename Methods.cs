@@ -122,10 +122,11 @@ namespace DeliveryApplication.Tools
             return "";
         }        
         
-        public static void SetAppProperty(string key, string value)
+        public static async Task SetAppProperty(string key, string value)
         {
             /* set the app property of {key} */
             Application.Current.Properties[key] = value;
+            await Application.Current.SavePropertiesAsync();
         }
 
         public static void SetFlowDirection(Page p)
@@ -336,6 +337,44 @@ namespace DeliveryApplication.Tools
             {
                 ItemSpacing = spacing
             };
+        }
+        
+        public static List<int> GetGridRowColumn(BindableObject obj)
+        {
+            /* 
+             * it is used mostly when an item inside a grid is clicked
+             * @param obj: the object to get its position, maybe frame, button, label. But it should be inside the grid
+             */
+            int row = Grid.GetRow(obj);
+            int column = Grid.GetColumn(obj);
+
+            return new List<int> { row, column };
+        }
+
+        public static string ListToString(List<string> lst)
+        {
+            /* 
+             * convert a list of type string to string
+             * @param lst: list of strings to be converted
+             * @return all items inside {lst} separated by ","
+             */
+            string result = "";
+
+            foreach (var item in lst)
+                if(!IsEmpty(item))
+                    result += ("," + item );
+
+            return RemoveFirstCharacter(result);
+        }
+
+        public static string RemoveFirstCharacter(string str)
+        {
+            return str.Length > 1 ? str.Substring(1) : str;
+        }
+
+        public static string RemoveLastCharacter(string str)
+        {
+            return str.Length > 1 ? str.Remove(str.Length - 1, 1) : str;
         }
     }
 }
