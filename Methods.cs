@@ -12,6 +12,21 @@ namespace DeliveryApplication.Tools
 {
     public class Methods
     {
+        private static Dictionary<int, string> hijriMonths = new Dictionary<int, string> {
+            {1,  "Muharram"},
+            {2,  "Safar"},
+            {3,  "Rabi I"},
+            {4,  "Rabih II"},
+            {5,  "Jumada I"},
+            {6,  "Jumada II"},
+            {7,  "Rajab"},
+            {8,  "Shaban"},
+            {9,  "Ramadan"},
+            {10,  "Shawwal"},
+            {11,  "Zulkadah"},
+            {12,  "Zulhijjah"},
+        };
+        
         public async static Task SignOut(Page p)
         {
             /* sign user out */
@@ -320,7 +335,7 @@ namespace DeliveryApplication.Tools
         {
             /* this method will be used to animate a label when showing a list but its itemssource is emtpy */
 
-            if (lst.Count == 0)
+            if (lst == null || lst.Count == 0)
             {
                 lbl.Opacity = 0;
                 lbl.IsVisible = true;
@@ -375,6 +390,46 @@ namespace DeliveryApplication.Tools
         public static string RemoveLastCharacter(string str)
         {
             return str.Length > 1 ? str.Remove(str.Length - 1, 1) : str;
+        }
+        
+         public static string GetHijriDate()
+        {
+            /* gets current hijri date in the format of (day monthName year) */
+
+            HijriCalendar calendar = new HijriCalendar();
+            string day = calendar.GetDayOfMonth(DateTime.Now).ToString();
+            string month = hijriMonths[calendar.GetMonth(DateTime.Now)];
+            string year = calendar.GetYear(DateTime.Now).ToString();
+
+            return day + " " + month + " " + year;
+        }
+
+        public static string GetHijriMonthName(int monthNb)
+        {
+            return hijriMonths[monthNb];
+        }
+
+        public static string GetNewHijriDate(int nbToAdd, string hijriDate)
+        {
+            /* add {nbToAdd} to {hijriDate} of format day monthName year*/
+            HijriCalendar calendar = new HijriCalendar();
+            int day = Int32.Parse(hijriDate.Split(' ')[0]);
+            int month = GetMonthNumberFromName(hijriDate.Split(' ')[1]);
+            int year = Int32.Parse(hijriDate.Split(' ')[2]);
+
+            DateTime newHijriDate = calendar.AddDays(new DateTime(year, month, day), nbToAdd);
+
+            return newHijriDate.Day + " " + Methods.GetHijriMonthName(newHijriDate.Month) + " " + newHijriDate.Year;
+        }
+
+        private static int GetMonthNumberFromName(string monthName)
+        {
+            /* get hijri month number from name */
+            foreach (var key in Methods.hijriMonths.Keys)
+                if (string.Equals(Methods.hijriMonths[key], monthName))
+                    return key;
+
+            return 0;
         }
     }
 }
