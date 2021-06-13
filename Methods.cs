@@ -366,7 +366,7 @@ namespace DeliveryApplication.Tools
             return new List<int> { row, column };
         }
 
-        public static string ListToString(List<string> lst)
+        public static string ListToString<T>(List<T> lst)
         {
             /* 
              * convert a list of type string to string
@@ -376,8 +376,8 @@ namespace DeliveryApplication.Tools
             string result = "";
 
             foreach (var item in lst)
-                if(!IsEmpty(item))
-                    result += ("," + item );
+                if (!IsEmpty(item.ToString()))
+                    result += ("," + item);
 
             return RemoveFirstCharacter(result);
         }
