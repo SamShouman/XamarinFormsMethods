@@ -381,6 +381,21 @@ namespace DeliveryApplication.Tools
 
             return RemoveFirstCharacter(result);
         }
+        
+        public static List<string> StringToList(string str, Char delimeter)
+        {
+            /* 
+             * convert a list of type string to string
+             * @param lst: list of strings to be converted
+             * @return all items inside {lst} separated by ","
+             */
+            List<string> result = new List<string>();
+
+            foreach (var item in str.Split(delimeter))
+                result.Add(item);
+
+            return result;
+        }
 
         public static string RemoveFirstCharacter(string str)
         {
