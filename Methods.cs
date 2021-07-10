@@ -437,7 +437,7 @@ namespace DeliveryApplication.Tools
             return newHijriDate.Day + " " + Methods.GetHijriMonthName(newHijriDate.Month) + " " + newHijriDate.Year;
         }
 
-        private static int GetMonthNumberFromName(string monthName)
+        private static int GetHijriMonthNumberFromName(string monthName)
         {
             /* get hijri month number from name */
             foreach (var key in Methods.hijriMonths.Keys)
@@ -445,6 +445,15 @@ namespace DeliveryApplication.Tools
                     return key;
 
             return 0;
+        }
+        
+        public static bool ConnectedToInternet()
+        {
+            /* checks if device has active internet connection
+               @return <bool> true if connected to internet else false;
+             */
+            var current = Connectivity.NetworkAccess;
+            return current == NetworkAccess.Internet;
         }
     }
 }
