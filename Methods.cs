@@ -473,7 +473,10 @@ namespace DeliveryApplication.Tools
         }
 
         public static async Task WaitMe(int ms)
-        {
+        {   
+            /* wait {ms} milliseconds then continue the work
+               @param ms: milliseconds to be waited for
+             */
             await Task.Delay(ms);
         }
 
