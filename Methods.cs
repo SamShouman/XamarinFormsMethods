@@ -455,5 +455,36 @@ namespace DeliveryApplication.Tools
             var current = Connectivity.NetworkAccess;
             return current == NetworkAccess.Internet;
         }
+
+        public static List<int> StringListToIntList(List<string> lst)
+        {
+            /*
+                convert list of string to list of int
+                @param lst: list that contains numbers as string
+                @return list containing string numbers in {lst} as int
+             */
+
+            List<int> newList = new List<int>();
+
+            foreach(string nb in lst)
+                newList.Add(Int32.Parse(nb));
+
+            return newList;
+        }
+
+        public static async Task WaitMe(int ms)
+        {
+            await Task.Delay(ms);
+        }
+
+        public static ImageSource LoadEmbeddedResource(string imgPath)
+        {
+            /* load embedded images
+             @param imgPath: path of the image to be loaded
+             @return image source to be loaded
+             */
+
+            return ImageSource.FromResource(imgPath);
+        }
     }
 }
